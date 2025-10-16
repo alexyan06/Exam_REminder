@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 # ====== CONFIG YOU EDIT ======
-LOCAL_TZ = ZoneInfo("America/Los_Angeles")
+LOCAL_TZ = ZoneInfo("America/New_York")
 
 EXAMS = [
     {"name": "CS 251 Midterm 2", "when": "2025-11-19 20:00"},
