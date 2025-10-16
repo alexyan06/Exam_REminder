@@ -1,0 +1,50 @@
+name: Send Exam Reminder Email
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # run once at the top of every hour (UTC)
+  workflow_dispatch:       # allow manual runs too
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'   # any >=3.9 is fine
+
+      - name: (Optional) Install dependencies if requirements.txt exists
+        if: hashFiles('requirements.txt') != ''
+        run: pip install -r requirements.txt
+
+      # Gate by America/New_York time so we only send at 9 AM or 9 PM ET
+      - name: Gate by Eastern Time (send only at 09:00 or 21:00)
+        id: gate
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          ny = datetime.now(ZoneInfo("America/New_York"))
+          print(f"NY time now: {ny.isoformat()}")
+          send = 'yes' if ny.hour in (9, 14, 21) else 'no'
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"send={send}\n")
+          PY
+
+      - name: Run study mailer (only at 9AM/9PM ET)
+        if: steps.gate.outputs.send == 'yes'
+        env:
+          STUDY_EMAIL: ${{ secrets.STUDY_EMAIL }}
+          STUDY_EMAIL_PASSWORD: ${{ secrets.STUDY_EMAIL_PASSWORD }}
+        run: |
+          # adjust path if your file isn't at repo root
+          python main.py --send
