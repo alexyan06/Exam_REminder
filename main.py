@@ -219,7 +219,7 @@ def build_email(now: datetime, next_exam: dict | None):
     date_str = now.strftime("%A, %B ") + ordinal(now.day) + now.strftime(", %Y")
 
     # ----- Plain text -----
-    text_lines = [f"Good morning! It’s {date_str}.", ""]
+    text_lines = [f"Hello Alex! It’s {date_str}.", ""]
     ups = upcoming_exams(now)
     if ups:
         text_lines.append("All upcoming exams:")
