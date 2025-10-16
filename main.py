@@ -216,10 +216,13 @@ def pick_closer(today_key: str) -> str:
 
 # ---------- email building (plain text + HTML with bold time) ----------
 def build_email(now: datetime, next_exam: dict | None):
+    # AM/PM-based key so 9am + 9pm have different quotes/actions/closers
+    today_key = now.strftime("%Y-%m-%d-%p")
+
     date_str = now.strftime("%A, %B ") + ordinal(now.day) + now.strftime(", %Y")
 
     # ----- Plain text -----
-    text_lines = [f"Hello Alex! It’s {date_str}.", ""]
+    text_lines = [f"Good morning! It’s {date_str}.", ""]
     ups = upcoming_exams(now)
     if ups:
         text_lines.append("All upcoming exams:")
@@ -241,7 +244,7 @@ def build_email(now: datetime, next_exam: dict | None):
         subject = "Daily Study Check-in: No upcoming exams listed"
         days_out_nearest = 30
         chosen_exam_name = "general"
-        text_lines += ["", "Why this matters:", pick_why_quote(now.strftime("%Y-%m-%d"), chosen_exam_name)]
+        text_lines += ["", "Why this matters:", pick_why_quote(today_key, chosen_exam_name)]
     else:
         exam_dt = parse_local(next_exam["when"])
         delta = exam_dt - now
@@ -262,20 +265,20 @@ def build_email(now: datetime, next_exam: dict | None):
                            f"Time remaining: {format_delta(delta)} ({days_out_nearest} day{'s' if days_out_nearest!=1 else ''})"]
         text_lines += ["",
                        "Why this matters:",
-                       pick_why_quote(now.strftime("%Y-%m-%d"), chosen_exam_name)]
+                       pick_why_quote(today_key, chosen_exam_name)]
 
     text_lines += ["",
                    "Today’s focus:",
-                   pick_action(days_out_nearest, chosen_exam_name, now.strftime("%Y-%m-%d")),
+                   pick_action(days_out_nearest, chosen_exam_name, today_key),
                    "",
                    "Tiny first step: 25 focused minutes. Then a 3-minute break. 💪",
-                   pick_closer(now.strftime("%Y-%m-%d"))]
+                   pick_closer(today_key)]
     body_text = "\n".join(text_lines)
 
     # ----- HTML (bold time) -----
     html = []
     html.append(f"""<html><body style="font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height:1.45; font-size:15px; color:#111;">
-<p>Hey Alex! It’s {date_str}.</p>
+<p>Good morning! It’s {date_str}.</p>
 """)
 
     if ups:
@@ -312,9 +315,9 @@ def build_email(now: datetime, next_exam: dict | None):
             html.append(f"<p><strong>Time remaining:</strong> <strong>{format_delta(delta)}</strong> ({days_out_nearest} day{'s' if days_out_nearest!=1 else ''})</p>")
 
     html.append(f"""
-<p><strong>Why this matters:</strong><br/>{pick_why_quote(now.strftime("%Y-%m-%d"), chosen_exam_name)}</p>
-<p><strong>Today’s focus:</strong><br/>{pick_action(days_out_nearest, chosen_exam_name, now.strftime("%Y-%m-%d"))}</p>
-<p>Tiny first step: 25 focused minutes. Then a 3-minute break. 💪<br/>{pick_closer(now.strftime("%Y-%m-%d"))}</p>
+<p><strong>Why this matters:</strong><br/>{pick_why_quote(today_key, chosen_exam_name)}</p>
+<p><strong>Today’s focus:</strong><br/>{pick_action(days_out_nearest, chosen_exam_name, today_key)}</p>
+<p>Tiny first step: 25 focused minutes. Then a 3-minute break. 💪<br/>{pick_closer(today_key)}</p>
 </body></html>""")
     body_html = "".join(html)
 
