@@ -275,7 +275,7 @@ def build_email(now: datetime, next_exam: dict | None):
     # ----- HTML (bold time) -----
     html = []
     html.append(f"""<html><body style="font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height:1.45; font-size:15px; color:#111;">
-<p>Good morning! It’s {date_str}.</p>
+<p>Hey Alex! It’s {date_str}.</p>
 """)
 
     if ups:
