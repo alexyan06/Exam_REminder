@@ -12,12 +12,14 @@ from zoneinfo import ZoneInfo
 LOCAL_TZ = ZoneInfo("America/New_York")
 
 EXAMS = [
-    {"name": "CS 251 Midterm 2", "when": "2025-11-19 20:00"},
-    {"name": "CS 251 Finals",    "when": "2025-12-15 08:00"},
-    {"name": "CS 250 Midterm 2", "when": "2025-10-28 11:30"},
-    {"name": "CS 250 Finals",    "when": "2025-12-15 15:30"},
-    {"name": "MA 351 Midterm 2", "when": "2025-11-06 16:30"},
-    {"name": "MA 351 Finals",    "when": "2025-12-20 10:30"},
+    {"name": "STAT350 Computer Assignment 1", "when": "2026-02-03 23:59"},
+    {"name": "STAT350 Homework 2", "when": "2026-02-03 23:59"},
+    {"name": "CS252 Lab Assignment", "when": "2026-02-05 13:30"},
+    {"name": "CS252 Lab Assembly Exam", "when": "2026-02-05 13:30"},
+    {"name": "CS211 Four Problems", "when": "2026-02-05 23:59"},
+    {"name": "AGEC 217 Exam #1", "when": "2026-02-05 23:59"},
+    {"name": "EAPS 112 Exam #1", "when": "2026-02-06 23:59"},
+    {"name": "Calculus 3 Lectures", "when": "2026-02-08 23:59"},
 ]
 
 TO_EMAILS = ["alexyan2309@gmail.com"]
