@@ -12,8 +12,6 @@ from zoneinfo import ZoneInfo
 LOCAL_TZ = ZoneInfo("America/New_York")
 
 EXAMS = [
-    {"name": "STAT350 Computer Assignment 1", "when": "2026-02-03 23:59"},
-    {"name": "STAT350 Homework 2", "when": "2026-02-03 23:59"},
     {"name": "CS252 Lab Assignment", "when": "2026-02-05 13:30"},
     {"name": "CS252 Lab Assembly Exam", "when": "2026-02-05 13:30"},
     {"name": "CS211 Four Problems", "when": "2026-02-05 23:59"},
